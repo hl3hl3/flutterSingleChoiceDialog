@@ -45,21 +45,44 @@ const kRoundedRectangleBorder16 = RoundedRectangleBorder(
 ///
 ///
 class SingleChoiceDialog<T> extends StatefulWidget {
-  final T initValue;
-  final List<T> options;
-  final OptionTitleBuilder titleBuilder;
-  final String ok;
-  final String cancel;
-  final Color activeColor;
-  final Color okTextColor;
-  final Color cancelTextColor;
-  final Color splashColor;
-  final Color buttonBarDividerColor;
-  final double buttonBarDividerHeight;
-  final double itemHeight;
-  final int displayItemCount;
-  final double radioWidth;
+
+  /// 指定給 AlertDialog 的 shape，預設為 [kRoundedRectangleBorder16]
   final ShapeBorder shape;
+
+  /// 初始值
+  final T initValue;
+
+  /// 單選列表 選項
+  final List<T> options;
+  /// 單選列表 每個項目的高度，預設 48。
+  final double itemHeight;
+  /// 單選列表 一次至少顯示的項目數量，預設 7。
+  final int displayItemCount;
+
+  /// Radio 選取時的顏色
+  final Color activeColor;
+  /// Radio 區塊寬度，預設 56。
+  final double radioWidth;
+
+  /// 列表項目 標題 (Radio 右邊區塊) 的 Builder
+  final OptionTitleBuilder titleBuilder;
+  /// 列表項目 的 splash color
+  final Color splashColor;
+
+  /// 按鈕列 上方分隔線的顏色，預設 #F2F2F2
+  final Color buttonBarDividerColor;
+  /// 按鈕列 上方分隔線的高度，預設 1
+  final double buttonBarDividerHeight;
+
+  /// Ok 的文字
+  final String ok;
+  /// Ok 的文字顏色
+  final Color okTextColor;
+
+  /// Cancel 的文字
+  final String cancel;
+  /// Cancel 的文字顏色
+  final Color cancelTextColor;
 
   SingleChoiceDialog({
     this.initValue,
