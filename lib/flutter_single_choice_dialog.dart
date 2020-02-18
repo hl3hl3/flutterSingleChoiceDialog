@@ -11,38 +11,49 @@ const kRoundedRectangleBorder16 = RoundedRectangleBorder(
 /// Sample
 ///
 ///
-/// ```dart
-/// final result = await showDialog(
-///     context: context,
-///     barrierDismissible: false,
-///     builder: (context) {
-///       return SingleChoiceDialog<String>(
-///         initValue: '白底橘子',
-///         options: [
-///           '虎斑',
-///           '橘虎斑',
-///           '白底橘虎斑',
-///           '黑虎斑',
-///           '白底黑虎斑',
-///           '橘子',
-///           '白底橘子',
-///           '賓士',
-///           '乳牛',
-///           '三花',
-///         ],
-///         titleBuilder: (context, option) {
-///           return Text(option);
-///         },
-///         ok: "確定",
-///         cancel: "取消",
-///       );
-///     },
-///   ).then((result) {
-///     debugPrint('result: $result');
-///   });
 /// ```
-///
-///
+/// showDialog(
+///      context: context,
+///      barrierDismissible: false,
+///      builder: (context) {
+///        return SingleChoiceDialog<String>(
+///          initValue: '白底橘子',
+///          options: [
+///            '虎斑',
+///            '橘虎斑',
+///            '白底橘虎斑',
+///            '黑虎斑',
+///            '白底黑虎斑',
+///            '橘子',
+///            '白底橘子',
+///            '賓士',
+///            '乳牛',
+///            '三花',
+///          ],
+///          titleBuilder: (context, option) {
+///            return Text(option);
+///          },
+///          okButton: SizedBox(
+///            width: 74,
+///            height: 36,
+///            child: Center(
+///              child: Text('OK'),
+///            ),
+///          ),
+///          cancelButton: SizedBox(
+///            width: 100,
+///            height: 36,
+///            child: Align(
+///              alignment: Alignment.centerRight,
+///              child: Text('CANCEL'),
+///            ),
+///          ),
+///        );
+///      },
+///    ).then((result) {
+///      debugPrint('result: $result');
+///    });
+/// ```
 ///
 class SingleChoiceDialog<T> extends StatefulWidget {
 
@@ -74,25 +85,18 @@ class SingleChoiceDialog<T> extends StatefulWidget {
   /// 按鈕列 上方分隔線的高度，預設 1
   final double buttonBarDividerHeight;
 
-  /// Ok 的文字
-  final String ok;
-  /// Ok 的文字顏色
-  final Color okTextColor;
-
-  /// Cancel 的文字
-  final String cancel;
-  /// Cancel 的文字顏色
-  final Color cancelTextColor;
+  /// Ok 的按鈕
+  final Widget okButton;
+  /// Cancel 的按鈕
+  final Widget cancelButton;
 
   SingleChoiceDialog({
-    this.initValue,
-    this.options,
-    this.titleBuilder,
-    this.ok = "OK",
-    this.cancel = "CANCEL",
+    @required this.initValue,
+    @required this.options,
+    @required this.titleBuilder,
+    @required this.okButton,
+    @required this.cancelButton,
     this.activeColor = Colors.green,
-    this.okTextColor = Colors.green,
-    this.cancelTextColor = Colors.green,
     this.splashColor = Colors.transparent,
     this.buttonBarDividerColor = const Color(0xfff2f2f2),
     this.buttonBarDividerHeight = 1,
@@ -172,13 +176,12 @@ class _SingleChoiceDialogState<T> extends State<SingleChoiceDialog<T>> {
             height: widget.buttonBarDividerHeight,
           ),
           Padding(
-            padding: EdgeInsets.symmetric(horizontal: paddingUnit, vertical: 4),
+            padding: const EdgeInsets.all(8.0),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: <Widget>[
-                _button(
-                    widget.cancel, widget.cancelTextColor, _onPressedCancel),
-                _button(widget.ok, widget.okTextColor, _onPressedOk),
+                GestureDetector(child: widget.cancelButton, onTap: _onPressedCancel),
+                GestureDetector(child: widget.okButton, onTap: _onPressedOk),
               ],
             ),
           ),
@@ -186,16 +189,6 @@ class _SingleChoiceDialogState<T> extends State<SingleChoiceDialog<T>> {
       ),
     );
   }
-
-  Widget _button(String text, Color textColor, Function onPressed) =>
-      FlatButton(
-        padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-        child: Text(
-          text,
-          style: TextStyle(color: textColor, fontSize: 16),
-        ),
-        onPressed: onPressed,
-      );
 
   _onPressedCancel() => Navigator.pop(context, widget.initValue);
 
